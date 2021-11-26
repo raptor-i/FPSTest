@@ -79,6 +79,12 @@ AFPSCharacter::AFPSCharacter()
 	FPSWeaponSecondary->SetRelativeScale3D(FVector(1.5f,1.5f,1.5f));
 
 	Health = DefaultHealth;
+
+	static ConstructorHelpers::FObjectFinder<USoundCue> PainCue(
+		TEXT("'/Game/Sounds/C_PainSound.C_PainSound'"));
+	if(PainCue.Succeeded())
+		SoundCue = PainCue.Object;
+	
 }
 // Called when the game starts or when spawned
 void AFPSCharacter::BeginPlay()
@@ -244,8 +250,10 @@ float AFPSCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEv
 	if(Health <= 0)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("You Died")));
-	}	
-
+	}
+	float Pitcher = FMath::FRandRange(0.75f,1.f);
+	
+    UAudioComponent* AudioComponent = UGameplayStatics::SpawnSound2D(this, SoundCue, .5f, Pitcher, 0.f);
 	return DamageAmount;
 }
 

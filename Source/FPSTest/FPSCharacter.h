@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Sound/SoundCue.h"
+
 #include "FPSCharacter.generated.h"
 
 
@@ -113,5 +115,8 @@ public:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool bIsChangingCPP;
+
+	UPROPERTY(VisibleAnywhere)
+	USoundCue* SoundCue;
 
 };
