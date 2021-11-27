@@ -51,43 +51,9 @@ public:
 
 	UFUNCTION()
 	void StopCrouch();
-	//FPS Camera
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	UCameraComponent* FPSCameraComponent;
-
-	UPROPERTY(VisibleDefaultsOnly,BlueprintReadWrite, Category=Mesh)
-	USkeletalMeshComponent* FPSMesh;
-
-
-	UPROPERTY(VisibleAnywhere,BlueprintReadWrite, Category=Mesh)
-	USkeletalMeshComponent* FPSWeapon;
-
-	UPROPERTY(VisibleAnywhere,BlueprintReadWrite, Category=Mesh)
-	USkeletalMeshComponent* FPSWeaponSecondary;
 	
-	//Gets muzzleoffset from camera location
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-	FVector MuzzleOffset;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	bool bIsHidden; //if 0 it is Ak, else rifle
-
-	
-	//Spawns Projectile class
-	UPROPERTY(EditDefaultsOnly, Category = Projectile)
-	TSubclassOf<class AFPSProjectiles> ProjectileClass;
-	
-	UPROPERTY(EditDefaultsOnly, Category = Projectile)
-	TSubclassOf<class AProjectile7_62> ProjectileClass7_62;
-
 	float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
-	UPROPERTY(BlueprintReadWrite)
-	float Health = 0;
-	
-	UPROPERTY(BlueprintReadWrite)
-	float DefaultHealth = 100;
-	
 	UFUNCTION(BlueprintCallable)
 	void GunRecoilSystem();
 	
@@ -98,10 +64,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void FireStop();
 
+	UFUNCTION()
 	void MuzzleFlash();
 
 	UFUNCTION()
 	void FPSPawn();
+	
 	//Sets muzzle flash emitter for Rifle when fire
 	UPROPERTY(EditDefaultsOnly)
 	UParticleSystem* MuzzleFlashParticleSystemRifle;
@@ -119,4 +87,37 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	USoundCue* SoundCue;
 
+	UPROPERTY(BlueprintReadWrite)
+	float Health = 0;
+	
+	UPROPERTY(BlueprintReadWrite)
+	float DefaultHealth = 100;
+
+	//FPS Camera
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UCameraComponent* FPSCameraComponent;
+
+	UPROPERTY(VisibleDefaultsOnly,BlueprintReadWrite, Category=Mesh)
+	USkeletalMeshComponent* FPSMesh;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite, Category=Mesh)
+	USkeletalMeshComponent* FPSWeapon;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite, Category=Mesh)
+	USkeletalMeshComponent* FPSWeaponSecondary;
+	
+	//Gets muzzleoffset from camera location
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	FVector MuzzleOffset;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	bool bIsHidden; //if 0 it is Ak, else rifle
+
+	//Spawns Projectile class
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<class AFPSProjectiles> ProjectileClass;
+	
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<class AProjectile7_62> ProjectileClass7_62;
+	
 };
