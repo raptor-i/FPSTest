@@ -68,7 +68,13 @@ public:
 	void MuzzleFlash();
 
 	UFUNCTION()
-	void FPSPawn();
+	APawn* FPSPawn();
+
+	UFUNCTION()
+	void PickUp();
+
+	UFUNCTION()
+	void PickUpEffect(FHitResult Fhit);
 	
 	//Sets muzzle flash emitter for Rifle when fire
 	UPROPERTY(EditDefaultsOnly)

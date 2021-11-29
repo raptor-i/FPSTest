@@ -112,6 +112,7 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Jump",IE_Released,this,&AFPSCharacter::StopJump);
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AFPSCharacter::ToggleCrouch);
 	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AFPSCharacter::StopCrouch);
+	PlayerInputComponent->BindAction("Pick", IE_Pressed, this, &AFPSCharacter::PickUp);
 }
 
 void AFPSCharacter::MoveForward(float value)
@@ -143,6 +144,7 @@ void AFPSCharacter::StopJump()
 void AFPSCharacter::ToggleCrouch()
 {
 	AFPSCharacter::Crouch();
+	
 }
 
 void AFPSCharacter::StopCrouch()
@@ -237,13 +239,13 @@ void AFPSCharacter::MuzzleFlash()
 
 }
 
-void AFPSCharacter::FPSPawn()
+APawn* AFPSCharacter::FPSPawn()
 {
-	return;
+	return GetWorld()->GetFirstPlayerController()->GetPawn();
 }
 
 float AFPSCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
-	AActor* DamageCauser)
+                                AActor* DamageCauser)
 {
 	Health -= DamageAmount;
 	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Orange, FString::Printf(TEXT("Current Healt %f"),Health));
@@ -257,4 +259,34 @@ float AFPSCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEv
 	return DamageAmount;
 }
 
+void AFPSCharacter::PickUp()
+{
+	FHitResult FHit;
+	FVector EyesLoc;
+	FRotator EyesRot;
+	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(EyesLoc, EyesRot);
+	FVector Location = EyesLoc + EyesRot.Vector() * 200;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	Params.AddIgnoredActor(FPSPawn());
+
+	if(GetWorld()->LineTraceSingleByChannel(FHit, EyesLoc, Location, ECollisionChannel::ECC_Visibility, Params))
+	{
+		if(FHit.GetActor() == nullptr) return;
+		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Magenta,
+											FString::Printf(TEXT("Actor Picked %s"), *FHit.GetActor()->GetName()));
+		if(FHit.GetActor()->ActorHasTag("Pickup"))
+		{
+			PickUpEffect(FHit);
+		}
+	}
+}
+
+void AFPSCharacter::PickUpEffect(FHitResult Fhit)
+{
+	if(Fhit.GetActor()->ActorHasTag("Battery"))
+	{
+		
+	}
+}
 
